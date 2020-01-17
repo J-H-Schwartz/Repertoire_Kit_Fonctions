@@ -14,8 +14,8 @@ recherche = []
 # Fonction vérification existance contact
 
 def verification_existance_contact(repertoire_listing, nom_a_verifier):
-    for i in range(len(repertoire_listing)):
-        if nom_a_verifier == repertoire_listing[i]['NOM']:
+    for item in repertoire_listing:
+        if nom_a_verifier == item['NOM']:
             return True
 
 
@@ -36,9 +36,9 @@ def ajouter_numero(nom_nouveau_contact, numero_nouveau_contact, adresse_nouveau_
 # Fonction Suppression numéro
 
 def supprimer_numero(repertoire_cible, nom_contact_suppression):
-    for element in range(len(repertoire_cible)):
-        if nom_contact_suppression == repertoire_cible[element]['NOM']:
-            del repertoire_cible[element]
+    for i, element in enumerate(repertoire_cible):
+        if nom_contact_suppression == element['NOM']:
+            del repertoire_cible[i]
             break
 
 
@@ -47,15 +47,18 @@ def supprimer_numero(repertoire_cible, nom_contact_suppression):
 def recherche_contact(repertoire_recherche, nom_recherche="defaut", numero_recherche="defaut",
                       type_de_recherche="defaut"):
     contact_trouve = []
-    for i in range(len(repertoire_recherche)):
+    champ = ''
+    entree_recherchee = ""
+    for item in repertoire_recherche:
         if type_de_recherche == "N":
-            if nom_recherche in repertoire_recherche[i]['NOM']:
-                contact_trouve.append({'NOM': repertoire_recherche[i]['NOM'], 'NUMERO': repertoire_recherche[i]
-                                      ['NUMERO'], 'ADRESSE': repertoire_recherche[i]['ADRESSE']})
+            champ = 'NOM'
+            entree_recherchee = nom_recherche
         elif type_de_recherche == "0":
-            if numero_recherche in repertoire_recherche[i]['NUMERO']:
-                contact_trouve.append({'NOM': repertoire_recherche[i]['NOM'], 'NUMERO': repertoire_recherche[i]
-                                       ['NUMERO'], 'ADRESSE': repertoire_recherche[i]['ADRESSE']})
+            champ = 'NUMERO'
+            entree_recherchee = numero_recherche
+        if entree_recherchee in item[champ]:
+            contact_trouve.append({'NOM': item['NOM'], 'NUMERO': item
+                                   ['NUMERO'], 'ADRESSE': item['ADRESSE']})
     return contact_trouve
 
 
@@ -65,14 +68,14 @@ def modification_numero(repertoire_modification):
     modif = False
     modification = ""
     while True:
-        nom_a_modifier = input("Entrez le nom du contact à modifier ou tapez P pour revenir au menu "
+        nom_a_modifier = input("Entrez le nom du contact à modifier ou tapez Entrée pour revenir au menu "
                                "précédent: ").upper()
         verification_existance_nom = verification_existance_contact(repertoire_modification, nom_a_modifier)
         if verification_existance_nom:
             break
         print("Ce contact n'existe pas.")
 
-    if nom_a_modifier == "P":
+    if nom_a_modifier == "":
         print("Retour au menu précédent.")
         return
     while True:
@@ -82,15 +85,15 @@ def modification_numero(repertoire_modification):
             destination = 'NUMERO'
             break
         elif destination == "A":
-            modification = input("Entrez la nouvelle adresse: ").upper()
+            modification = input("Entrez la nouvelle adresse: ")
             destination = 'ADRESSE'
             break
         else:
             print("Commande non reconnue. Recommencez.")
             continue
-    for elements in range(len(repertoire_modification)):
-        if nom_a_modifier == repertoire_modification[elements]['NOM']:
-            repertoire_modification[elements][destination] = modification
+    for contacts in repertoire_modification:
+        if nom_a_modifier == contacts['NOM']:
+            contacts[destination] = modification
             modif = True
             break
     if modif:
@@ -105,42 +108,39 @@ while True:
     choix = input("(L)ister (R)echercher (A)jouter (M)odifier (S)upprimer (Q)uitter")
     choix = choix.upper()
 
-
-# Afficher répertoire.
+    # Afficher répertoire.
 
     if choix == "L":
         afficher_repertoire(repertoire)
 
-
-# Ajouter contact.
+    # Ajouter contact.
 
     elif choix == "A":
-        nouveau_contact = input("Entrez le nom du contact à ajouter ou (P)récedent: ").upper()
+        nouveau_contact = input("Entrez le nom du contact à ajouter ou tapez Entrée pour revenir au menu "
+                                "principal: ").upper()
         contact_existant = verification_existance_contact(repertoire, nouveau_contact)
         if contact_existant:
             print("Ce contact existe déja.")
             continue
-        if nouveau_contact == "P":
+        if nouveau_contact == "":
             continue
         nouveau_numero = input("Entrez le numéro du contact à ajouter: ").upper()
         nouvelle_adresse = input("Entrez l'adresse du contact à ajouter: ")
         ajouter_numero(nouveau_contact, nouveau_numero, nouvelle_adresse)
 
-
-# Modification.
+    # Modification.
 
     elif choix == "M":
         modification_numero(repertoire)
 
-
-# Recherche contact.
+    # Recherche contact.
 
     elif choix == "R":
         recherche = []
         while True:
-            choix_recherche = input("Rechercher par : (N)om  /  Numero(0)").upper()
+            choix_recherche = input("Rechercher par : (N)om  /  Numero(0) / (P)récédent").upper()
             if choix_recherche == "0":
-                numero_a_rechercher = input("Entrer un numéro à rechercher ou (P)récedent: ").upper()
+                numero_a_rechercher = input("Entrer un numéro à rechercher : ").upper()
                 recherche = recherche_contact(repertoire_recherche=repertoire, numero_recherche=numero_a_rechercher,
                                               type_de_recherche=choix_recherche)
                 break
@@ -149,18 +149,19 @@ while True:
                 recherche = recherche_contact(repertoire_recherche=repertoire, nom_recherche=nom_a_rechercher,
                                               type_de_recherche=choix_recherche)
                 break
+            elif choix_recherche == "P":
+                break
             else:
                 print("Commande non reconnue. Recommencez.")
         afficher_repertoire(recherche)
 
-
-# Suppression contact.
+    # Suppression contact.
 
     elif choix == "S":
         while True:
-            suppression = input("Entrez le nom du contact à supprimer ou (P)récedent: ").upper()
+            suppression = input("Entrez le nom du contact à supprimer ou tapez Entrée pour revenir au menu: ").upper()
             try:
-                if suppression == "P":
+                if suppression == "":
                     break
                 supprimer_numero(repertoire, suppression)
                 print("Le contact a été supprimé.")
@@ -168,15 +169,13 @@ while True:
             except KeyError:
                 print("Ce contact n'existe pas. Recommencez.")
 
-
-# Quitter programme.
+    # Quitter programme.
 
     elif choix == "Q":
         print("Programme quitté.")
         break
 
-
-# Si aucun choix valide, reposer la question.
+    # Si aucun choix valide, reposer la question.
 
     else:
         print("Commande non reconnue. Recommencez.")

@@ -88,18 +88,20 @@ def recherche_de_contact(repertoire):
     resultat = []
     while True:
         choix = input("Rechercher par : (N)om  /  Numero(0) / (P)récédent").upper()
-        if choix == "0":
-            numero = input("Entrer un numéro à rechercher : ").upper()
-            resultat = recherche_contact(repertoire=repertoire, numero=numero,
-                                         type_de_recherche=choix)
-            return resultat
-        elif choix == "N":
-            nom = input("Entrez votre recherche: ").upper()
-            resultat = recherche_contact(repertoire=repertoire, nom=nom,
-                                         type_de_recherche=choix)
+        if choix == "0" or choix == "N":
+            champ = input("Entrez votre recherche: ").upper()
+            if choix == "0":
+                argument = {"numero": champ}
+            if choix == "N":
+                argument = {"nom": champ}
+            if champ == "":
+                print("Commande non reconnue. Recommencez")
+                continue
+            resultat = recherche_contact(repertoire=repertoire,
+                                         type_de_recherche=choix, **argument)
             return resultat
         elif choix == "P":
-            return
+            return resultat
         else:
             print("Commande non reconnue. Recommencez.")
 
@@ -121,47 +123,53 @@ def supprimer(repertoire):
 
 # Début.
 
-while True:
-    choix = input("(L)ister (R)echercher (A)jouter (M)odifier (S)upprimer (Q)uitter")
-    choix = choix.upper()
+def main():
+    while True:
+        choix = input("(L)ister (R)echercher (A)jouter (M)odifier (S)upprimer (Q)uitter")
+        choix = choix.upper()
 
-    # Afficher répertoire.
+        # Afficher répertoire.
 
-    if choix == "L":
-        afficher_repertoire(repertoire)
+        if choix == "L":
+            afficher_repertoire(repertoire)
 
-    # Ajouter contact.
+        # Ajouter contact.
 
-    elif choix == "A":
-        ajout_contact(repertoire)
+        elif choix == "A":
+            ajout_contact(repertoire)
 
-    # Modification.
+        # Modification.
 
-    elif choix == "M":
-        modification(repertoire)
+        elif choix == "M":
+            modification(repertoire)
 
-    # Recherche contact.
+        # Recherche contact.
 
-    elif choix == "R":
-        resultat = recherche_de_contact(repertoire)
-        if len(resultat) < 1:
-            print("La recherche n'a donné aucun résultat.")
+        elif choix == "R":
+            resultat = recherche_de_contact(repertoire)
+            if len(resultat) < 1:
+                print("La recherche n'a donné aucun résultat.")
+                continue
+            else:
+                afficher_repertoire(resultat)
+
+        # Suppression contact.
+
+        elif choix == "S":
+            supprimer(repertoire)
+
+        # Quitter programme.
+
+        elif choix == "Q":
+            print("Programme quitté.")
+            break
+
+        # Si aucun choix valide, reposer la question.
+
+        else:
+            print("Commande non reconnue. Recommencez.")
             continue
-        afficher_repertoire(resultat)
 
-    # Suppression contact.
 
-    elif choix == "S":
-        supprimer(repertoire)
-
-    # Quitter programme.
-
-    elif choix == "Q":
-        print("Programme quitté.")
-        break
-
-    # Si aucun choix valide, reposer la question.
-
-    else:
-        print("Commande non reconnue. Recommencez.")
-        continue
+if __name__ == "__main__":
+    main()

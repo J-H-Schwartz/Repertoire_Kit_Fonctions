@@ -4,31 +4,32 @@ import repertoire_utils_text as repertoire_utils
 
 # Fonction vérification existance contact
 
-def verification_contact(nom):
-    contact_existant = repertoire_utils.verification_existance_contact(nom)
+def verification_contact(repertoire, nom):
+    contact_existant = repertoire_utils.verification_existance_contact(repertoire, nom)
     return contact_existant
 
 
 # Fonction Ajouter numéro
 
-def ajouter_personne(nom, numero='defaut', adresse='defaut'):
-    repertoire_utils.append_rep(nom, numero, adresse)
+def ajouter_personne(repertoire, nom, numero='defaut', adresse='defaut'):
+    personne = {"NOM": nom, "NUMERO": numero, "ADRESSE": adresse, "NOM_UPPER": nom.upper()}
+    repertoire_utils.append_rep(repertoire, personne)
 
 
 # Fonction Suppression numéro
 
-def supprimer_personne(nom):
-    suppression = repertoire_utils.del_rep(nom)
+def supprimer_personne(repertoire, personne):
+    suppression = repertoire_utils.del_rep(repertoire, personne)
     return suppression
 
 
 # Fonction Recherche
 
-def chercher_personne(nom="defaut", numero="defaut", type_de_recherche="defaut"):
+def chercher_personne(repertoire, nom="defaut", numero="defaut", type_de_recherche="defaut"):
     contact_trouve = []
     champ = ''
     entree_recherchee = ""
-    for item in repertoire_utils.get_rep():
+    for item in repertoire:
         if type_de_recherche.upper() == "N":
             champ = 'NOM'
             entree_recherchee = nom
@@ -43,12 +44,10 @@ def chercher_personne(nom="defaut", numero="defaut", type_de_recherche="defaut")
 
 # Fonction modification numéro.
 
-def modification_numero(contact, destination, modification):
-    for contacts in repertoire_utils.get_rep():
+def modification_contact(repertoire, contact, destination, modification):
+    for contacts in repertoire:
         if contact.upper() == contacts['NOM'].upper():
             contacts[destination] = modification
-            contacts['NOM_UPPER'] = modification.upper()
-            repertoire_utils.changes_save()
+            repertoire_utils.changes_save(repertoire)
             return True
     return False
-

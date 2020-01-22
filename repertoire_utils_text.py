@@ -1,50 +1,43 @@
 # coding: utf-8
 import json
-with open("repertoire.txt", "r") as repertoire_text:
-    repertoire_data = json.loads(repertoire_text.read())
-
-print(repertoire_data)
 
 
 # Fonction appel répertoire
 
 def get_rep():
-    return repertoire_data
+    with open("repertoire.txt", "r") as repertoire_text:
+        repertoire = json.loads(repertoire_text.read())
+    return repertoire
 
 
 # Fonction vérification existance contact
 
-def verification_existance_contact(nom):
-    for item in repertoire_data:
-        if nom.upper() == item['NOM'].upper():
+def verification_existance_contact(repertoire, nom):
+    for item in repertoire:
+        if nom.upper() == item['NOM_UPPER']:
             return True
 
 
 # Fonction Ajouter numéro
 
-def append_rep(nom, numero, adresse):
-    repertoire_data.append({"NOM": nom, "NUMERO": numero, "ADRESSE": adresse, "NOM_UPPER": nom.upper()})
-    repertoire_text = open("repertoire.txt", "w")
-    repertoire_text.write(str(repertoire_data).replace("\'", "\""))
-    repertoire_text.close()
+def append_rep(repertoire, personne):
+    repertoire.append(personne)
+    with open("repertoire.txt", "w") as repertoire_text:
+        repertoire_text.write(json.dumps(repertoire))
 
 
 # Fonction Suppression numéro
 
-def del_rep(nom):
-    for contact, element in enumerate(repertoire_data):
-        if nom.upper() == element['NOM'].upper():
-            del repertoire_data[contact]
-            repertoire_text = open("repertoire.txt", "w")
-            repertoire_text.write(str(repertoire_data).replace("\'", "\""))
-            repertoire_text.close()
-            return True
+def del_rep(repertoire, personne):
+    for contact in repertoire:
+        if personne.upper() == contact['NOM'].upper():
+            repertoire.remove(contact)
+            with open("repertoire.txt", "w") as repertoire_text:
+                repertoire_text.write(json.dumps(repertoire))
+                return True
     return False
 
 
-def changes_save():
-    repertoire_text = open("repertoire.txt", "w")
-    repertoire_text.write(str(repertoire_data).replace("\'", "\""))
-    repertoire_text.close()
-
-
+def changes_save(repertoire):
+    with open("repertoire.txt", "w") as repertoire_text:
+        repertoire_text.write(json.dumps(repertoire))

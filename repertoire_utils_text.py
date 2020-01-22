@@ -6,7 +6,7 @@ import json
 
 def get_rep():
     with open("repertoire.txt", "r") as repertoire_text:
-        repertoire = json.loads(repertoire_text.read())
+        repertoire = sorted(json.loads(repertoire_text.read()), key=lambda k: k["NOM_UPPER"])
     return repertoire
 
 

@@ -5,11 +5,6 @@ import repertoire_utils_text as repertoire_utils
 from terminaltables import DoubleTable
 
 
-# Fonction tri alphabetique
-# def tri_upper(key='NOM_UPPER'):
-#    return 'NOM_UPPER'
-
-
 # Fonction Afficher_Repertoire
 
 def afficher_repertoire(repertoire):
@@ -18,7 +13,6 @@ def afficher_repertoire(repertoire):
     ]
     for contact in repertoire:
         tableau_contacts.append([contact['NOM'], contact['NUMERO'], contact['ADRESSE']])
-    tableau_contacts = sorted(tableau_contacts)
     tableau = DoubleTable(tableau_contacts)
     tableau.inner_row_border = True
     print(tableau.table)

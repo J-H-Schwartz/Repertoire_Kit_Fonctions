@@ -1,19 +1,16 @@
 # coding: utf-8
-from repertoire_utils.repertoire_action import verification_existance_contact, ajouter_personne, \
-    modification_numero, chercher_personne, supprimer_personne
+from repertoire_utils.repertoire_action import verification_contact, ajouter_personne, \
+    modification_numero, chercher_personne, supprimer_personne, get_repertoire
 from terminaltables import DoubleTable
 
-repertoire = [{'NOM': 'michael', 'NUMERO': '1111111111', 'ADRESSE': 'blabla@mfloe.com', 'NOM_UPPER': "MICHAEL"},
-              {'NOM': 'Linda', 'NUMERO': '2222222222', 'ADRESSE': 'blbblb@zvrez.com', 'NOM_UPPER': "LINDA"},
-              {'NOM': 'SANDRA', 'NUMERO': '3333333333', 'ADRESSE': 'fzefzzcz@fzv.com', 'NOM_UPPER': "SANDRA"},
-              {'NOM': 'sandra2', 'NUMERO': '4444444444', 'ADRESSE': 'fzgzgvdsz@fzv.com', 'NOM_UPPER': "SANDRA2"},
-              {'NOM': 'Sandra3', 'NUMERO': '555555555', 'ADRESSE': 'aaeaczzcz@fzv.com', 'NOM_UPPER': "SANDRA3"}]
+
 resultat = []
 
 
 # Fonction tri alphabetique
 # def tri_upper(key='NOM_UPPER'):
 #    return 'NOM_UPPER'
+
 
 # Fonction Afficher_Repertoire
 
@@ -31,10 +28,10 @@ def afficher_repertoire(repertoire):
 
 # Fonction Ajout contact
 
-def ajout_contact(repertoire):
+def ajout_contact():
     while True:
         nom = input("Entrez le nom du contact à ajouter ou tapez Entrée pour revenir au menu principal: ")
-        resultat = verification_existance_contact(repertoire, nom)
+        resultat = verification_contact(nom)
         if resultat:
             print("Ce contact existe déja.")
             continue
@@ -42,19 +39,19 @@ def ajout_contact(repertoire):
             continue
         numero = input("Entrez le numéro du contact à ajouter: ")
         adresse = input("Entrez l'adresse du contact à ajouter: ")
-        ajouter_personne(nom, numero, adresse, repertoire)
+        ajouter_personne(nom, numero, adresse)
         print("Le contact a bien été ajouté.")
         return
 
 
 # Fonction Modification de contact
 
-def modification(repertoire):
+def modification():
     champ = ""
     while True:
         modification = ""
         nom = input("Entrez le nom du contact à modifier ou tapez Entrée pour revenir au menu précédent: ")
-        resultat = verification_existance_contact(repertoire, nom)
+        resultat = verification_contact(nom)
         if nom == "":
             print("Retour au menu précédent.")
             break
@@ -75,7 +72,7 @@ def modification(repertoire):
             print("Commande non reconnue. Recommencez.")
             continue
     try:
-        resultat = modification_numero(repertoire, nom, champ, modification)
+        resultat = modification_numero(nom, champ, modification)
         if resultat:
             print("Le contact a été modifié.")
             return
@@ -88,7 +85,7 @@ def modification(repertoire):
 
 # Fonction Recherche Contact
 
-def recherche_de_contact(repertoire):
+def recherche_de_contact():
     resultat = []
     while True:
         choix = input("Rechercher par : (N)om  /  Numero(0) / (P)récédent")
@@ -102,8 +99,7 @@ def recherche_de_contact(repertoire):
             if champ == "":
                 print("Commande non reconnue. Recommencez")
                 continue
-            resultat = chercher_personne(repertoire=repertoire,
-                                         type_de_recherche=choix, **argument)
+            resultat = chercher_personne(type_de_recherche=choix, **argument)
             return resultat
         elif choix.upper() == "P":
             return resultat
@@ -113,12 +109,12 @@ def recherche_de_contact(repertoire):
 
 # Fonction Suppression
 
-def supprimer(repertoire):
+def supprimer():
     while True:
         nom = input("Entrez le nom du contact à supprimer ou tapez Entrée pour revenir au menu: ")
         if nom == "":
             return
-        resultat = supprimer_personne(repertoire, nom)
+        resultat = supprimer_personne(nom)
         if resultat:
             print("Le contact a été supprimé.")
             return
@@ -129,6 +125,7 @@ def supprimer(repertoire):
 # Fonction principale du répertoire.
 
 def main():
+    repertoire = get_repertoire()
     while True:
         choix = input("(L)ister (R)echercher (A)jouter (M)odifier (S)upprimer (Q)uitter")
         choix = choix.upper()
@@ -141,17 +138,17 @@ def main():
         # Ajouter contact.
 
         elif choix.upper() == "A":
-            ajout_contact(repertoire)
+            ajout_contact()
 
         # Modification.
 
         elif choix.upper() == "M":
-            modification(repertoire)
+            modification()
 
         # Recherche contact.
 
         elif choix.upper() == "R":
-            resultat = recherche_de_contact(repertoire)
+            resultat = recherche_de_contact()
             if len(resultat) < 1:
                 print("La recherche n'a donné aucun résultat.")
                 continue
@@ -161,7 +158,7 @@ def main():
         # Suppression contact.
 
         elif choix.upper() == "S":
-            supprimer(repertoire)
+            supprimer()
 
         # Quitter programme.
 

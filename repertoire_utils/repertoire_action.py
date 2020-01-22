@@ -1,11 +1,5 @@
 # coding: utf-8
-import repertoire_utils_dict as repertoire_utils
-
-
-# Fonction appel repertoire:
-def get_repertoire():
-    repertoire = repertoire_utils.get_rep()
-    return repertoire
+import repertoire_utils_text as repertoire_utils
 
 
 # Fonction vérification existance contact
@@ -34,8 +28,7 @@ def chercher_personne(nom="defaut", numero="defaut", type_de_recherche="defaut")
     contact_trouve = []
     champ = ''
     entree_recherchee = ""
-    repertoire = get_repertoire()
-    for item in repertoire:
+    for item in repertoire_utils.get_rep():
         if type_de_recherche.upper() == "N":
             champ = 'NOM'
             entree_recherchee = nom
@@ -51,11 +44,11 @@ def chercher_personne(nom="defaut", numero="defaut", type_de_recherche="defaut")
 # Fonction modification numéro.
 
 def modification_numero(contact, destination, modification):
-    repertoire = get_repertoire()
-    for contacts in repertoire:
+    for contacts in repertoire_utils.get_rep():
         if contact.upper() == contacts['NOM'].upper():
             contacts[destination] = modification
             contacts['NOM_UPPER'] = modification.upper()
+            repertoire_utils.changes_save()
             return True
     return False
 

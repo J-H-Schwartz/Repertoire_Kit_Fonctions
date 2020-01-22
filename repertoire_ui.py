@@ -1,6 +1,7 @@
 # coding: utf-8
 from repertoire_utils.repertoire_action import verification_contact, ajouter_personne, \
-    modification_numero, chercher_personne, supprimer_personne, get_repertoire
+    modification_numero, chercher_personne, supprimer_personne
+import repertoire_utils_text as repertoire_utils
 from terminaltables import DoubleTable
 
 
@@ -125,7 +126,7 @@ def supprimer():
 # Fonction principale du répertoire.
 
 def main():
-    repertoire = get_repertoire()
+    repertoire = repertoire_utils.get_rep()
     while True:
         choix = input("(L)ister (R)echercher (A)jouter (M)odifier (S)upprimer (Q)uitter")
         choix = choix.upper()

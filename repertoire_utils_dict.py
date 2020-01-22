@@ -1,8 +1,6 @@
-repertoire_data = [{'NOM': 'michael', 'NUMERO': '1111111111', 'ADRESSE': 'blabla@mfloe.com', 'NOM_UPPER': "MICHAEL"},
-              {'NOM': 'Linda', 'NUMERO': '2222222222', 'ADRESSE': 'blbblb@zvrez.com', 'NOM_UPPER': "LINDA"},
-              {'NOM': 'SANDRA', 'NUMERO': '3333333333', 'ADRESSE': 'fzefzzcz@fzv.com', 'NOM_UPPER': "SANDRA"},
-              {'NOM': 'sandra2', 'NUMERO': '4444444444', 'ADRESSE': 'fzgzgvdsz@fzv.com', 'NOM_UPPER': "SANDRA2"},
-              {'NOM': 'Sandra3', 'NUMERO': '555555555', 'ADRESSE': 'aaeaczzcz@fzv.com', 'NOM_UPPER': "SANDRA3"}]
+# Code transféré sur repertoire_utils_text.
+
+repertoire_data = []
 
 
 # Fonction appel répertoire

@@ -1,6 +1,6 @@
 # coding: utf-8
-from repertoire_utils.repertoire_action import verification_existance_contact, verification_existance_repertoire, ajouter_personne, \
-    modification_contact, chercher_personne, supprimer_personne, action_copie_repertoire
+from repertoire_utils.repertoire_action import verification_existance_contact, verification_existance_repertoire,\
+    ajouter_personne, modification_contact, chercher_personne, supprimer_personne, action_copie_repertoire
 import repertoire_utils_text as repertoire_utils
 from terminaltables import DoubleTable
 import glob
@@ -59,8 +59,6 @@ def copie_repertoire(nom_de_fichier):
             break
         else:
             print("La copie a échoué. Rééssayez")
-
-
 
 
 # Fonction Ajout contact

@@ -20,7 +20,6 @@ def action_copie_repertoire(nom_du_repertoire, cible):
         return False
 
 
-
 # Fonction choix répertoire
 
 def verification_existance_repertoire(nom_de_fichier):

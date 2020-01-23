@@ -1,6 +1,24 @@
 # coding: utf-8
+import sys
 import repertoire_utils_text as repertoire_utils
 import os
+import shutil
+
+
+# Fonction copie de répertoire
+
+def action_copie_repertoire(nom_du_repertoire, cible):
+    source = os.path.abspath(nom_du_repertoire)
+    print(source)
+    target = cible + nom_du_repertoire
+    print(cible)
+    try:
+        shutil.copy(source, target)
+        return True
+    except:
+        print("Unexpected error", sys.exc_info())
+        return False
+
 
 
 # Fonction choix répertoire

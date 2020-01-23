@@ -1,6 +1,6 @@
 # coding: utf-8
 from repertoire_utils.repertoire_action import verification_existance_contact, verification_existance_repertoire, ajouter_personne, \
-    modification_contact, chercher_personne, supprimer_personne
+    modification_contact, chercher_personne, supprimer_personne, action_copie_repertoire
 import repertoire_utils_text as repertoire_utils
 from terminaltables import DoubleTable
 import glob
@@ -41,6 +41,26 @@ def afficher_repertoire(repertoire):
     tableau_contacts = DoubleTable(tableau)
     tableau_contacts.inner_row_border = True
     print(tableau_contacts.table)
+
+
+# Copie répertoire
+
+def copie_repertoire(nom_de_fichier):
+    while True:
+        cible = input("Où voulez-vous créer la copie du répertoire ? Entrez un chemin laissez le champ vide pour le"
+                      " créer sur le bureau, ou (P)récédent: ")
+        if cible.upper() == "P":
+            break
+        if cible == "":
+            cible = "/home/jonathan/Desktop/"
+        validation_copie = action_copie_repertoire(nom_de_fichier, cible)
+        if validation_copie:
+            print("Le répertoire a été copié avec succès.")
+            break
+        else:
+            print("La copie a échoué. Rééssayez")
+
+
 
 
 # Fonction Ajout contact
@@ -150,7 +170,8 @@ def main():
     nom_de_fichier = selection_repertoire()
     while True:
         repertoire = repertoire_utils.get_rep(nom_de_fichier)
-        choix = input("(L)ister (R)echercher / (A)jouter / (M)odifier / (S)upprimer / (C)hanger Répertoire / (Q)uitter")
+        choix = input("(L)ister (R)echercher / (A)jouter / (M)odifier / (S)upprimer / (C)hanger Répertoire /"
+                      " (D)upliquer Répertoire / (Q)uitter")
         choix = choix.upper()
 
         # Changer répertoire de travail
@@ -159,9 +180,15 @@ def main():
             nom_de_fichier = selection_repertoire()
             continue
 
+        # Dupliquer Répertoire
+
+        elif choix == "D":
+            copie_repertoire(nom_de_fichier)
+            continue
+
         # Afficher répertoire.
 
-        if choix == "L":
+        elif choix == "L":
             afficher_repertoire(repertoire)
 
         # Ajouter contact.

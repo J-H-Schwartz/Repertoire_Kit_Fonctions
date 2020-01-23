@@ -1,11 +1,21 @@
 # coding: utf-8
 import json
+import os.path
+
+
+# Fonction Choix Répertoire
+
+def existing_repertories_check(nom_de_fichier):
+    if os.path.isfile(nom_de_fichier):
+        return True
+    else:
+        return False
 
 
 # Fonction appel répertoire
 
-def get_rep():
-    with open("repertoire.txt", "r") as repertoire_text:
+def get_rep(repertoire_actif):
+    with open(repertoire_actif, "r") as repertoire_text:
         repertoire = sorted(json.loads(repertoire_text.read()), key=lambda k: k["NOM_UPPER"])
     return repertoire
 

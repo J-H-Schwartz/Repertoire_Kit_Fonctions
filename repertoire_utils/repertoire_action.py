@@ -2,9 +2,18 @@
 import repertoire_utils_text as repertoire_utils
 
 
+# Fonction choix répertoire
+
+def verification_existance_repertoire(nom_de_fichier):
+    if repertoire_utils.existing_repertories_check(nom_de_fichier) == 0:
+        return False
+    else:
+        return True
+
+
 # Fonction vérification existance contact
 
-def verification_contact(repertoire, nom):
+def verification_existance_contact(repertoire, nom):
     contact_existant = repertoire_utils.verification_existance_contact(repertoire, nom)
     return contact_existant
 

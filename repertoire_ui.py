@@ -1,11 +1,33 @@
 # coding: utf-8
-from repertoire_utils.repertoire_action import verification_contact, ajouter_personne, \
+from repertoire_utils.repertoire_action import verification_existance_contact, verification_existance_repertoire, ajouter_personne, \
     modification_contact, chercher_personne, supprimer_personne
 import repertoire_utils_text as repertoire_utils
 from terminaltables import DoubleTable
+import glob
 
 
-# Fonction Afficher_Repertoire
+# Fonction Afficher répertoires disponibles
+
+def lister_repertoires():
+    liste_repertoires = glob.glob('/home/jonathan/Desktop/Repositories/Repertoire_Kit_Fonctions/*.txt')
+    for repertoires in liste_repertoires:
+        print(repertoires)
+
+
+# Choix répertoire
+
+def selection_repertoire():
+    while True:
+        lister_repertoires()
+        nom_de_fichier = input("Quel répertoire souhaitez vous consulter ? ")
+        repertoire_ok = verification_existance_repertoire(nom_de_fichier)
+        if repertoire_ok:
+            return nom_de_fichier
+        else:
+            print('Ce repertoire n\'éxiste pas.')
+
+
+# Fonction Afficher_Repertoire Choisi
 
 def afficher_repertoire(repertoire):
     tableau_contacts = [
@@ -23,7 +45,7 @@ def afficher_repertoire(repertoire):
 def ajout_contact_ui(repertoire):
     while True:
         nom = input("Entrez le nom du contact à ajouter ou tapez Entrée pour revenir au menu principal: ")
-        resultat = verification_contact(repertoire, nom)
+        resultat = verification_existance_contact(repertoire, nom)
         if resultat:
             print("Ce contact existe déja.")
             continue
@@ -43,7 +65,7 @@ def modification_contact_ui(repertoire):
     while True:
         modification = ""
         nom = input("Entrez le nom du contact à modifier ou tapez Entrée pour revenir au menu précédent: ")
-        resultat = verification_contact(repertoire, nom)
+        resultat = verification_existance_contact(repertoire, nom)
         if nom == "":
             print("Retour au menu précédent.")
             break
@@ -122,29 +144,36 @@ def supprimer_contact_ui(repertoire):
 # Fonction principale du répertoire.
 
 def main():
+    nom_de_fichier = selection_repertoire()
     while True:
-        repertoire = repertoire_utils.get_rep()
-        choix = input("(L)ister (R)echercher (A)jouter (M)odifier (S)upprimer (Q)uitter")
+        repertoire = repertoire_utils.get_rep(nom_de_fichier)
+        choix = input("(L)ister (R)echercher / (A)jouter / (M)odifier / (S)upprimer / (C)hanger Répertoire / (Q)uitter")
         choix = choix.upper()
+
+        # Changer répertoire de travail
+
+        if choix == "C":
+            nom_de_fichier = selection_repertoire()
+            continue
 
         # Afficher répertoire.
 
-        if choix.upper() == "L":
+        if choix == "L":
             afficher_repertoire(repertoire)
 
         # Ajouter contact.
 
-        elif choix.upper() == "A":
+        elif choix == "A":
             ajout_contact_ui(repertoire)
 
         # Modification.
 
-        elif choix.upper() == "M":
+        elif choix == "M":
             modification_contact_ui(repertoire)
 
         # Recherche contact.
 
-        elif choix.upper() == "R":
+        elif choix == "R":
             resultat = recherche_de_contact_ui(repertoire)
             if len(resultat) < 1:
                 print("La recherche n'a donné aucun résultat.")
@@ -154,12 +183,12 @@ def main():
 
         # Suppression contact.
 
-        elif choix.upper() == "S":
+        elif choix == "S":
             supprimer_contact_ui(repertoire)
 
         # Quitter programme.
 
-        elif choix.upper() == "Q":
+        elif choix == "Q":
             print("Programme quitté.")
             break
 

@@ -3,12 +3,24 @@ import json
 import os.path
 
 
+# Fonction conversion liste
+
+def conversion_repertoire_liste(repertoire):
+    tout_les_contacts = []
+    for contacts in repertoire:
+        tout_les_contacts.append(contacts)
+    return tout_les_contacts
+
+
 # Fonction Choix Répertoire
 
 def existing_repertories_check(nom_de_fichier):
     if os.path.isfile(nom_de_fichier):
         return True
     else:
+        nouveau_repertoire = open(nom_de_fichier, "w+")
+        nouveau_repertoire.write("[]")
+        nouveau_repertoire.close()
         return False
 
 

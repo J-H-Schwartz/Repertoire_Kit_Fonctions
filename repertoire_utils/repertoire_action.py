@@ -1,5 +1,6 @@
 # coding: utf-8
 import repertoire_utils_text as repertoire_utils
+import os
 
 
 # Fonction choix répertoire

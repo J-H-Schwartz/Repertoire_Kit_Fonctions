@@ -22,22 +22,25 @@ def selection_repertoire():
         nom_de_fichier = input("Quel répertoire souhaitez vous consulter ? ")
         repertoire_ok = verification_existance_repertoire(nom_de_fichier)
         if repertoire_ok:
+            print("Répertoire séléctionné: " + nom_de_fichier)
             return nom_de_fichier
         else:
-            print('Ce repertoire n\'éxiste pas.')
+            print('Répertoire créé:' + nom_de_fichier)
+            return nom_de_fichier
 
 
 # Fonction Afficher_Repertoire Choisi
 
 def afficher_repertoire(repertoire):
-    tableau_contacts = [
+    tableau = [
         ["-Nom:", "-Numero:", "-Adresse:"],
     ]
-    for contact in repertoire:
-        tableau_contacts.append([contact['NOM'], contact['NUMERO'], contact['ADRESSE']])
-    tableau = DoubleTable(tableau_contacts)
-    tableau.inner_row_border = True
-    print(tableau.table)
+    liste_contacts = repertoire_utils.conversion_repertoire_liste(repertoire)
+    for contacts in liste_contacts:
+        tableau.append([contacts['NOM'], contacts['ADRESSE'], contacts['NUMERO']])
+    tableau_contacts = DoubleTable(tableau)
+    tableau_contacts.inner_row_border = True
+    print(tableau_contacts.table)
 
 
 # Fonction Ajout contact
